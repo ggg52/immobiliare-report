@@ -3,31 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-    <meta http-equiv="Pragma" content="no-cache">
-    <meta http-equiv="Expires" content="0">
-    <title>Report Immobiliare</title>
+    <title>Annunci Immobiliare.it</title>
     <style>
-        body { font-family: sans-serif; padding: 20px; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 10px; border-bottom: 1px solid #eee; text-align: left; }
-        .price { font-weight: bold; color: red; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Segoe UI', Tahoma, sans-serif; padding: 24px 32px; background: #fff; color: #222; }
+        h1 { font-size: 1.5em; margin-bottom: 6px; }
+        .summary { font-size: 0.92em; color: #333; margin-bottom: 6px; }
+        .summary b { color: #111; }
+        .controls { display: flex; align-items: center; gap: 12px; margin: 14px 0 10px; flex-wrap: wrap; }
+        .controls button { padding: 6px 14px; border: 1px solid #aaa; border-radius: 4px; background: #f5f5f5; cursor: pointer; font-size: 13px; }
+        .controls input { padding: 6px 10px; border: 1px solid #ccc; border-radius: 4px; font-size: 13px; width: 220px; }
+        table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+        thead th { border-bottom: 2px solid #ccc; padding: 8px 10px; text-align: left; cursor: pointer; }
+        tbody td { padding: 7px 10px; border-bottom: 1px solid #eee; }
+        .price { font-weight: bold; color: #cc0000; }
+        .badge { font-size: 12px; padding: 2px 8px; border-radius: 10px; background: #e6f4ea; color: #1e7e34; }
     </style>
 </head>
 <body>
-    <h1>Report Immobiliare - Aggiornato il 06/05/2026 20:17</h1>
+    <h1>Annunci Immobiliare.it - Aggiornato il 06/05/2026 23:01</h1>
+    <p class="summary">Totale annunci: <b id="s-tot">-</b> | Visibili: <b id="s-vis">-</b></p>
+    <div class="controls">
+        <input type="text" id="filtro" placeholder="🔍 Filtra..." oninput="render()">
+    </div>
     <table>
-        <thead><tr><th>ID</th><th>Titolo</th><th>Prezzo</th><th>Link</th></tr></thead>
+        <thead><tr><th>ID</th><th>Titolo</th><th>Ubicazione</th><th>Prezzo</th><th>Stato</th><th>Link</th></tr></thead>
         <tbody id="tb"></tbody>
     </table>
     <script>
-        const ads = [{"id": 128834958, "titolo": "Trilocale via Giardini 20, Giardini - Oasi Sacro Cuore, Giugliano in Campania", "ubicazione": "N/D", "prezzo": "€ 165.000", "prezzo_num": 165000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128834958/"}, {"id": 128803152, "titolo": "Trilocale piazza Sandro Pertini 2, Centro, Pessano con Bornago", "ubicazione": "N/D", "prezzo": "€ 199.000", "prezzo_num": 199000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128803152/"}, {"id": 128710056, "titolo": "Trilocale via Alfonso Artiaco 190, Pozzuoli Alta, Pozzuoli", "ubicazione": "N/D", "prezzo": "€ 170.000", "prezzo_num": 170000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128710056/"}, {"id": 128699298, "titolo": "Bilocale via Somalia 58, Centro, Santa Margherita Ligure", "ubicazione": "N/D", "prezzo": "€ 239.000", "prezzo_num": 239000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128699298/"}, {"id": 128563484, "titolo": "Trilocale via 24 Maggio 16, Centro, Trofarello", "ubicazione": "N/D", "prezzo": "€ 149.000", "prezzo_num": 149000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128563484/"}, {"id": 128509260, "titolo": "Trilocale via Tirreno 137, Santa Rita, Torino", "ubicazione": "N/D", "prezzo": "€ 155.000", "prezzo_num": 155000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128509260/"}, {"id": 128482928, "titolo": "Quadrilocale via Guido Gozzano 26, Venaria Reale", "ubicazione": "N/D", "prezzo": "€ 189.000", "prezzo_num": 189000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128482928/"}, {"id": 128369290, "titolo": "Quadrilocale via Molise 19, Centro, Termoli", "ubicazione": "N/D", "prezzo": "€ 198.000", "prezzo_num": 198000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128369290/"}, {"id": 128114790, "titolo": "Trilocale via Armando Diaz 32, Vado Centro, Vado Ligure", "ubicazione": "N/D", "prezzo": "€ 169.000", "prezzo_num": 169000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128114790/"}, {"id": 128108186, "titolo": "Trilocale via Enrico Spelta 9, San Fereolo, Albarola, Faustina, Lodi", "ubicazione": "N/D", "prezzo": "€ 249.000", "prezzo_num": 249000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128108186/"}, {"id": 128054040, "titolo": "Trilocale traversa 2 via Ca' Gamba 4, Jesolo Paese, Jesolo", "ubicazione": "N/D", "prezzo": "€ 240.000", "prezzo_num": 240000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/128054040/"}, {"id": 127248371, "titolo": "Bilocale via Pietro Venturi, Portuense, Roma", "ubicazione": "N/D", "prezzo": "€ 250.000", "prezzo_num": 250000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/127248371/"}, {"id": 127189637, "titolo": "Trilocale via isonzo 42, Soccavo, Napoli", "ubicazione": "N/D", "prezzo": "€ 225.000", "prezzo_num": 225000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/127189637/"}, {"id": 127000159, "titolo": "Villa a schiera via Giuseppe Mazzini, Rezzato", "ubicazione": "N/D", "prezzo": "€ 215.000", "prezzo_num": 215000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/127000159/"}, {"id": 126964903, "titolo": "Villa a schiera via Albino Bottesi, Ostia Antica, Roma", "ubicazione": "N/D", "prezzo": "€ 229.000", "prezzo_num": 229000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/126964903/"}, {"id": 126584313, "titolo": "Trilocale via Villa Grande 2, Sant'Anna, Rapallo", "ubicazione": "N/D", "prezzo": "€ 229.000", "prezzo_num": 229000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/126584313/"}, {"id": 126431275, "titolo": "Trilocale via dei Ceraseti 54, Castelluccia - Fontana Sala, Marino", "ubicazione": "N/D", "prezzo": "€ 190.000", "prezzo_num": 190000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/126431275/"}, {"id": 126342947, "titolo": "Trilocale via Eugenio Curiel 4, Centro, Rozzano", "ubicazione": "N/D", "prezzo": "€ 259.000", "prezzo_num": 259000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/126342947/"}, {"id": 125547031, "titolo": "Quadrilocale viale Umbria 2, San Bernardo, Olmo, Lodi", "ubicazione": "N/D", "prezzo": "€ 199.000", "prezzo_num": 199000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/125547031/"}, {"id": 124958681, "titolo": "Villa a schiera via umberto giordano, Cedrate, Gallarate", "ubicazione": "N/D", "prezzo": "€ 189.000", "prezzo_num": 189000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/124958681/"}, {"id": 123917129, "titolo": "Trilocale via Privata Sanguineti 6, Parco Casale - Castello dei Sogni, Rapallo", "ubicazione": "N/D", "prezzo": "€ 159.000", "prezzo_num": 159000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/123917129/"}, {"id": 123346591, "titolo": "Trilocale via Patrioti 92, Centro, Ossona", "ubicazione": "N/D", "prezzo": "€ 175.000", "prezzo_num": 175000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/123346591/"}, {"id": 122274140, "titolo": "Bilocale via Vestricio Spurinna 105, Quadraro, Roma", "ubicazione": "N/D", "prezzo": "€ 239.000", "prezzo_num": 239000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/122274140/"}, {"id": 121483226, "titolo": "Quadrilocale corso Nizza 54, Centro, Cuneo", "ubicazione": "N/D", "prezzo": "€ 196.000", "prezzo_num": 196000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/121483226/"}, {"id": 106454747, "titolo": "Quadrilocale corso Taranto 11, Regio Parco, Torino", "ubicazione": "N/D", "prezzo": "€ 149.900", "prezzo_num": 149900, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/106454747/"}];
-        document.getElementById('tb').innerHTML = ads.map(r => `
-            <tr>
-                <td>${r.id}</td>
-                <td>${r.titolo}</td>
-                <td class="price">${r.prezzo}</td>
-                <td><a href="${r.link}" target="_blank">Apri</a></td>
-            </tr>`).join('');
+        const ads = [{"id": 123015945, "titolo": "Quadrilocale salita Marine 8, Bussana", "ubicazione": "Sanremo", "prezzo": "€ 190.000", "prezzo_num": 190000, "superficie": "N/D", "periodo": "May 2026", "periodo_sort": "2026-05", "stato": "Visibile", "link": "https://www.immobiliare.it/annunci/123015945/"}];
+        function render() {
+            const q = document.getElementById('filtro').value.toLowerCase();
+            const lista = ads.filter(r => r.titolo.toLowerCase().includes(q) || r.ubicazione.toLowerCase().includes(q));
+            document.getElementById('s-tot').textContent = ads.length;
+            document.getElementById('s-vis').textContent = lista.length;
+            document.getElementById('tb').innerHTML = lista.map(r => `
+                <tr>
+                    <td>${r.id}</td>
+                    <td>${r.titolo}</td>
+                    <td>${r.ubicazione}</td>
+                    <td class="price">${r.prezzo}</td>
+                    <td><span class="badge">✅ ${r.stato}</span></td>
+                    <td><a href="${r.link}" target="_blank">Apri</a></td>
+                </tr>`).join('');
+        }
+        render();
     </script>
 </body>
 </html>
